@@ -1,6 +1,8 @@
 import * as fs from 'fs/promises'
 import * as path from 'path'
 
+import {getPrices} from './prices'
+
 interface Transaction {
   type: string
   boughtAmount: number
@@ -11,10 +13,20 @@ interface Transaction {
   timestamp: string
 }
 
+interface Coin {
+  id: string
+  symbol: string
+  name: string
+}
+
 async function main() {
-  const inputPath = path.resolve('transactions.json')
-  const json = await fs.readFile(inputPath)
-  const transactions: Transaction[] = JSON.parse(json.toString())
+  const transactionsPath = path.resolve('transactions.json')
+  const transactionsJSON = await fs.readFile(transactionsPath)
+  const transactions: Transaction[] = JSON.parse(transactionsJSON.toString())
+
+  const coinsPath = path.resolve('coins.json')
+  const coinsJSON = await fs.readFile(coinsPath)
+  const coins: Coin[] = JSON.parse(coinsJSON.toString())
 
   const balances: any = {}
   const totalCost: any = {}
@@ -45,7 +57,26 @@ async function main() {
     averageCost[asset] = totalCost[asset] / balances[asset]
   }
 
-  console.log({balances, averageCost})
+  // map from asset symbol to coingecko id
+  const assets: string[] = []
+  for (const asset in averageCost) {
+    const coin = coins.find(c => c.symbol === asset)!
+    assets.push(coin.id)
+  }
+
+  const currency = 'usd'
+  const currentPrices = await getPrices(assets, [currency])
+
+  const currentValues: any = {}
+  const unrealizedGains: any = {}
+  for (const asset in averageCost) {
+    const coin = coins.find(c => c.symbol === asset)!
+    const price = (currentPrices as any)[coin.id][currency]
+    currentValues[asset] = balances[asset] * price
+    unrealizedGains[asset] = currentValues[asset] - averageCost[asset] * balances[asset]
+  }
+
+  console.log({balances, averageCost, currentPrices, currentValues, unrealizedGains})
 }
 
 main()
