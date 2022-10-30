@@ -2,16 +2,8 @@ import * as fs from 'fs/promises'
 import * as path from 'path'
 
 import {getPrices} from './prices'
-
-interface Transaction {
-  type: string
-  boughtAmount: number
-  boughtAsset: string
-  soldAmount: number
-  soldAsset: string
-  exchange: string
-  timestamp: string
-}
+import {Trade} from './trade'
+import {SerializedTransaction, Transaction} from './transaction'
 
 interface Coin {
   id: string
@@ -22,7 +14,8 @@ interface Coin {
 async function main() {
   const transactionsPath = path.resolve('transactions.json')
   const transactionsJSON = await fs.readFile(transactionsPath)
-  const transactions: Transaction[] = JSON.parse(transactionsJSON.toString())
+  const rawTransactions: SerializedTransaction[] = JSON.parse(transactionsJSON.toString())
+  const transactions = rawTransactions.map(Transaction.deserialize)
 
   const coinsPath = path.resolve('coins.json')
   const coinsJSON = await fs.readFile(coinsPath)
@@ -32,7 +25,7 @@ async function main() {
   const totalCost: any = {}
 
   for (const transaction of transactions) {
-    if (transaction.type === 'trade') {
+    if (transaction instanceof Trade) {
       balances[transaction.boughtAsset] = 0
       balances[transaction.soldAsset] = 0
       totalCost[transaction.boughtAsset] = 0
@@ -40,7 +33,7 @@ async function main() {
   }
 
   for (const transaction of transactions) {
-    if (transaction.type === 'trade') {
+    if (transaction instanceof Trade) {
       balances[transaction.boughtAsset] += transaction.boughtAmount
       balances[transaction.soldAsset] -= transaction.soldAmount
 
