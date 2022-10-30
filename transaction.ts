@@ -1,12 +1,12 @@
+import {Deposit, SerializedDeposit} from './deposit'
 import {SerializedTrade, Trade} from './trade'
 
 export enum TransactionType {
   Deposit = 'deposit',
-  Withdraw = 'withdraw',
+  Withdrawal = 'withdrawal',
   Trade = 'trade',
   Earning = 'earning',
   Expenditure = 'expenditure',
-  Loss = 'loss',
 }
 
 export interface SerializedTransaction {
@@ -38,6 +38,9 @@ export abstract class Transaction {
   static deserialize(transaction: SerializedTransaction) {
     if (transaction.type === TransactionType.Trade)
       return Trade.deserialize(transaction as SerializedTrade)
+
+    if (transaction.type === TransactionType.Deposit)
+      return Deposit.deserialize(transaction as SerializedDeposit)
 
     throw 'Unknown transaction type'
   }

@@ -24,7 +24,9 @@ Kobold will be an open-source application to track your crypto portfolios. It st
 - Build user interface
 - Transaction imports
 - Calculate realized gains and losses
+- Write tests and add to GitHub action
 
 ## Ideas
 
 - CoinTracking import (using Puppeteer)
+- Include buy/sell indicators like CBBI
