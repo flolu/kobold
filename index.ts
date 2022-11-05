@@ -1,9 +1,10 @@
 import * as fs from 'fs/promises'
 import * as path from 'path'
 
+import {Deposit, SerializedDeposit} from './deposit'
 import {getPrices} from './prices'
-import {Trade} from './trade'
-import {SerializedTransaction, Transaction} from './transaction'
+import {SerializedTrade, Trade} from './trade'
+import {SerializedTransaction, TransactionType} from './transaction'
 
 interface Coin {
   id: string
@@ -11,11 +12,21 @@ interface Coin {
   name: string
 }
 
+function deserializeTransaction(transaction: SerializedTransaction) {
+  if (transaction.type === TransactionType.Trade)
+    return Trade.deserialize(transaction as SerializedTrade)
+
+  if (transaction.type === TransactionType.Deposit)
+    return Deposit.deserialize(transaction as SerializedDeposit)
+
+  throw 'Unknown transaction type'
+}
+
 async function main() {
   const transactionsPath = path.resolve('transactions.json')
   const transactionsJSON = await fs.readFile(transactionsPath)
   const rawTransactions: SerializedTransaction[] = JSON.parse(transactionsJSON.toString())
-  const transactions = rawTransactions.map(Transaction.deserialize)
+  const transactions = rawTransactions.map(deserializeTransaction)
 
   const coinsPath = path.resolve('coins.json')
   const coinsJSON = await fs.readFile(coinsPath)
