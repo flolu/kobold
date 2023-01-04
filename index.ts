@@ -23,12 +23,12 @@ function deserializeTransaction(transaction: SerializedTransaction) {
 }
 
 async function main() {
-  const transactionsPath = path.resolve('transactions.json')
+  const transactionsPath = path.resolve('data/transactions.json')
   const transactionsJSON = await fs.readFile(transactionsPath)
   const rawTransactions: SerializedTransaction[] = JSON.parse(transactionsJSON.toString())
   const transactions = rawTransactions.map(deserializeTransaction)
 
-  const coinsPath = path.resolve('coins.json')
+  const coinsPath = path.resolve('data/coins.json')
   const coinsJSON = await fs.readFile(coinsPath)
   const coins: Coin[] = JSON.parse(coinsJSON.toString())
 
@@ -48,7 +48,7 @@ async function main() {
       balances[transaction.boughtAsset] += transaction.boughtAmount
       balances[transaction.soldAsset] -= transaction.soldAmount
 
-      if (transaction.soldAsset === 'USDT') {
+      if (transaction.soldAsset === 'tether') {
         totalCost[transaction.boughtAsset] += transaction.soldAmount
       }
     }
@@ -57,30 +57,35 @@ async function main() {
   const averageCost: any = {}
 
   for (const asset in balances) {
-    if (asset === 'USDT') continue
+    if (asset === 'tether') continue
     averageCost[asset] = totalCost[asset] / balances[asset]
   }
 
-  // map from asset symbol to coingecko id
-  const assets: string[] = []
+  const assetIds: string[] = []
   for (const asset in averageCost) {
-    const coin = coins.find(c => c.symbol === asset)!
-    assets.push(coin.id)
+    assetIds.push(asset)
   }
 
   const currency = 'usd'
-  const currentPrices = await getPrices(assets, [currency])
+  const currentPrices = await getPrices(assetIds, [currency])
 
   const currentValues: any = {}
   const unrealizedGains: any = {}
+  let total = 0
+  let gains = 0
+
   for (const asset in averageCost) {
-    const coin = coins.find(c => c.symbol === asset)!
+    const coin = coins.find(c => c.id === asset)!
     const price = (currentPrices as any)[coin.id][currency]
+
     currentValues[asset] = balances[asset] * price
     unrealizedGains[asset] = currentValues[asset] - averageCost[asset] * balances[asset]
+
+    total += currentValues[asset]
+    gains += unrealizedGains[asset]
   }
 
-  console.log({balances, averageCost, currentPrices, currentValues, unrealizedGains})
+  console.log({balances, averageCost, currentPrices, currentValues, unrealizedGains, total, gains})
 }
 
 main()
