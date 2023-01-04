@@ -1,10 +1,15 @@
 import * as fs from 'fs/promises'
 import * as path from 'path'
 
-import {Deposit, SerializedDeposit} from './deposit'
+import {
+  Deposit,
+  SerializedDeposit,
+  SerializedTrade,
+  Trade,
+  SerializedTransaction,
+  TransactionType,
+} from './transactions'
 import {getPrices} from './prices'
-import {SerializedTrade, Trade} from './trade'
-import {SerializedTransaction, TransactionType} from './transaction'
 
 interface Coin {
   id: string

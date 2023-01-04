@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "ts-node index"
+    "start": "ts-node --project tsconfig.json src/index"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
