@@ -12,7 +12,7 @@ Kobold will be an open-source application to track your crypto portfolios. It st
 **Setup**
 
 - `npm i` (Install dependencies)
-- Create `data/coins.json` file with all coins from [CoinGecko](https://coingecko.com)
+- Create `data/coins.json` file with [all coins](https://api.coingecko.com/api/v3/coins/list) from [CoinGecko](https://coingecko.com)
 - Create `data/transactions.json` file with all your transactions
 
 **Run it**
