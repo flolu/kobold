@@ -90,7 +90,16 @@ async function main() {
     gains += unrealizedGains[asset]
   }
 
-  console.log({balances, averageCost, currentPrices, currentValues, unrealizedGains, total, gains})
+  const sortedCurrentValues = Object.keys(currentValues)
+    .sort((a, b) => (currentValues[a] > currentValues[b] ? -1 : 1))
+    .reduce((obj, key) => {
+      obj[key] = Math.floor(currentValues[key])
+      return obj
+    }, {})
+  console.log(sortedCurrentValues)
+  console.log('$', total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'))
+
+  // console.log({balances, averageCost, currentPrices, currentValues, unrealizedGains, total, gains})
 }
 
 main()
