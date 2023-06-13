@@ -13,6 +13,7 @@ import {corsMiddleware} from '@kobold/middlewares/cors.middleware'
 import {errorMiddleware} from '@kobold/middlewares/error.middleware'
 import {LanguageMiddleware} from '@kobold/middlewares/language.middleware'
 import {LoggerMiddleware} from '@kobold/middlewares/logger.middleware'
+import {MongoDbClient} from '@kobold/mongodb/mongodbClient'
 
 import {MainController} from './main.controller'
 
@@ -23,6 +24,7 @@ async function main() {
   container.bind(Logger).toSelf().inSingletonScope()
   container.bind(LoggerMiddleware).toSelf().inSingletonScope()
   container.bind(LanguageMiddleware).toSelf().inSingletonScope()
+  container.bind(MongoDbClient).toSelf().inSingletonScope()
 
   container.bind(MainController).toSelf()
   container.bind(TranslationService).toSelf()
@@ -30,11 +32,13 @@ async function main() {
   const logger = container.get(Logger)
   const config = container.get(Config)
   const translationService = container.get(TranslationService)
+  const mongodbClient = container.get(MongoDbClient)
 
   try {
     logger.info('starting service')
 
     await translationService.loadTranslations(['errors'])
+    await mongodbClient.connect()
 
     const server = new InversifyExpressServer(container)
 
@@ -55,17 +59,19 @@ async function main() {
     })
 
     // LATER sigterm doesn't seem to work with Ctrl+C when stopping docker containers
-    process.on('SIGTERM', () => shutdown(app, logger))
+    process.on('SIGTERM', () => shutdown(app, logger, mongodbClient))
   } catch (error) {
     logger.fatal(error)
     process.exit(1)
   }
 }
 
-async function shutdown(app: Server, logger: Logger) {
+async function shutdown(app: Server, logger: Logger, mongodbClient: MongoDbClient) {
   logger.info('shutting down service')
 
   app.close(async () => {
+    await mongodbClient.disconnect()
+
     logger.info('exit service')
     process.exit(0)
   })
