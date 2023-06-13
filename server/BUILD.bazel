@@ -1,0 +1,38 @@
+load("//macros:nodejs_image.bzl", "nodejs_image")
+load("//macros:ts_library.bzl", "ts_library")
+
+package(default_visibility = ["//auth/test/e2e:__pkg__"])
+
+ts_library(
+    name = "lib",
+    srcs = glob(
+        include = ["**/*.ts"],
+        exclude = ["**/*.test.ts"],
+    ),
+    deps = [
+        "//:node_modules/@abraham/reflection",
+        "//:node_modules/@kobold/config",
+        "//:node_modules/@kobold/exceptions",
+        "//:node_modules/@kobold/i18n",
+        "//:node_modules/@kobold/logger",
+        "//:node_modules/@kobold/middlewares",
+        "//:node_modules/@types/body-parser",
+        "//:node_modules/@types/cors",
+        "//:node_modules/@types/express",
+        "//:node_modules/@types/node",
+        "//:node_modules/body-parser",
+        "//:node_modules/express",
+        "//:node_modules/helmet",
+        "//:node_modules/http-status-codes",
+        "//:node_modules/inversify",
+        "//:node_modules/inversify-express-utils",
+    ],
+)
+
+nodejs_image(
+    name = "image",
+    base = "@debian_amd64//:image",
+    data = ["lib"],
+    entry_point = "index.js",
+    repotags = ["kobold/auth:latest"],
+)

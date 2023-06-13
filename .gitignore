@@ -1,2 +1,13 @@
-node_modules
 data/*.json
+
+# Node
+node_modules
+
+# Bazel
+bazel-*
+
+# Logs
+*.log
+
+# macOS
+.DS_Store

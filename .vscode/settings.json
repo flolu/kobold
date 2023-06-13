@@ -1,3 +1,17 @@
 {
-  "cSpell.words": ["Koinly"]
+  "cSpell.words": ["inversify", "middlewares"],
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  "importSorter.importStringConfiguration.hasSemicolon": false,
+  "importSorter.importStringConfiguration.spacingPerImportExpression.afterStartingBracket": 0,
+  "importSorter.importStringConfiguration.spacingPerImportExpression.beforeEndingBracket": 0,
+  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
+  "importSorter.importStringConfiguration.tabSize": 2,
+  "importSorter.importStringConfiguration.trailingComma": "multiLine",
+  "importSorter.sortConfiguration.removeUnusedImports": true,
+  "importSorter.sortConfiguration.customOrderingRules.rules": [
+    {"type": "importMember", "regex": "^$", "orderLevel": 10, "disableSort": true},
+    {"regex": "^(@kobold)", "orderLevel": 30},
+    {"regex": "^(@/)", "orderLevel": 40},
+    {"regex": "^[.]", "orderLevel": 50}
+  ]
 }

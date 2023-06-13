@@ -1,0 +1,30 @@
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("//macros:ts_library.bzl", "ts_library")
+
+filegroup(
+    name = "locales_json",
+    srcs = glob(["locales/**/*.json"]),
+)
+
+ts_library(
+    name = "lib",
+    srcs = glob(
+        include = ["*.ts"],
+        exclude = ["*.test.ts"],
+    ),
+    data = ["locales_json"],
+    deps = [
+        "//:node_modules/@kobold/enums",
+        "//:node_modules/@types/node",
+        "//:node_modules/i18next",
+        "//:node_modules/i18next-fs-backend",
+        "//:node_modules/inversify",
+    ],
+)
+
+npm_package(
+    name = "i18n",
+    srcs = [":lib"],
+    package = "@kobold/i18n",
+    visibility = ["//visibility:public"],
+)

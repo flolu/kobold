@@ -1,0 +1,56 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+
+package(default_visibility = ["//visibility:public"])
+
+npm_link_package(
+    name = "node_modules/@kobold/config",
+    src = "//libraries/config",
+)
+
+npm_link_package(
+    name = "node_modules/@kobold/exceptions",
+    src = "//libraries/exceptions",
+)
+
+npm_link_package(
+    name = "node_modules/@kobold/logger",
+    src = "//libraries/logger",
+)
+
+npm_link_package(
+    name = "node_modules/@kobold/enums",
+    src = "//libraries/enums",
+)
+
+npm_link_package(
+    name = "node_modules/@kobold/i18n",
+    src = "//libraries/i18n",
+)
+
+npm_link_package(
+    name = "node_modules/@kobold/middlewares",
+    src = "//libraries/middlewares",
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+)
+
+npm_link_all_packages(
+    name = "node_modules",
+)
+
+copy_to_bin(
+    name = "swcrc",
+    srcs = [".swcrc"],
+)
+
+copy_to_bin(
+    name = "jest_config",
+    srcs = ["jest.config.js"],
+    visibility = ["//:__subpackages__"],
+)
