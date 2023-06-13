@@ -7,6 +7,7 @@ import {Container} from 'inversify'
 import {InversifyExpressServer} from 'inversify-express-utils'
 
 import {Config} from '@kobold/config'
+import {TranslationService} from '@kobold/i18n'
 import {Logger} from '@kobold/logger'
 import {corsMiddleware} from '@kobold/middlewares/cors.middleware'
 import {errorMiddleware} from '@kobold/middlewares/error.middleware'
@@ -14,7 +15,6 @@ import {LanguageMiddleware} from '@kobold/middlewares/language.middleware'
 import {LoggerMiddleware} from '@kobold/middlewares/logger.middleware'
 
 import {MainController} from './main.controller'
-import {TranslationService} from '@kobold/i18n'
 
 async function main() {
   const container = new Container()
@@ -25,6 +25,7 @@ async function main() {
   container.bind(LanguageMiddleware).toSelf().inSingletonScope()
 
   container.bind(MainController).toSelf()
+  container.bind(TranslationService).toSelf()
 
   const logger = container.get(Logger)
   const config = container.get(Config)

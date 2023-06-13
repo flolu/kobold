@@ -1,0 +1,37 @@
+version: '3'
+services:
+  web:
+    # image: node:18
+    build:
+      dockerfile: ./web/Dockerfile.dev
+      context: .
+    container_name: kobold_web
+    volumes:
+      - ./web:/web
+    ports:
+      - 4000:4000
+    working_dir: /web
+    command: pnpm run dev
+
+  server:
+    image: node:18
+    container_name: kobold_server
+    volumes:
+      - ./package.json:/package.json
+      - ./tsconfig.json:/tsconfig.json
+      - ./nodemon.json:/nodemon.json
+      - ./node_modules:/node_modules
+      - ./libraries:/libraries
+      - ./server:/server
+      - ./scripts/start_service_dev.sh:/scripts/start_service_dev.sh
+    ports:
+      - 3000:3000
+      - 9229:9229
+    env_file: libraries/config/dev.config
+    environment:
+      SERVICE_NAME: server
+      DEBUG_SERVICE: ${DEBUG_SERVICE:-default}
+    working_dir: /
+    command: ./scripts/start_service_dev.sh
+    healthcheck:
+      test: curl -f http://localhost:3000/health

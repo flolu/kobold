@@ -1,0 +1,2 @@
+FROM node:lts-alpine AS deps
+RUN npm --silent install --global --depth 0 pnpm

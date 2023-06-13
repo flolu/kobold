@@ -12,3 +12,6 @@ build:
 
 lint:
 	npx prettier --check "**"
+
+dev:
+	docker-compose -f docker-compose.yaml up --build --no-log-prefix
