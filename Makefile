@@ -9,3 +9,6 @@ test:
 
 build:
 	bazel build //...
+
+lint:
+	npx prettier --check "**"

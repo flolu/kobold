@@ -1,0 +1,49 @@
+name: test
+on:
+  push:
+    branches:
+      - main
+      - dev
+    tags-ignore:
+      - '*'
+  pull_request:
+    branches:
+      - main
+      - dev
+jobs:
+  check-code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+          run_install: false
+      - run: pnpm install
+      - run: make lint
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bazelbuild/setup-bazelisk@v2
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+          run_install: false
+      - run: pnpm install
+      - run: bazel build //...
+      - run: bazel test //...
+
+  web-app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+          run_install: false
+      - working-directory: web
+        run: pnpm install
+      - working-directory: web
+        run: pnpm build

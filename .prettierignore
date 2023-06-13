@@ -1,0 +1,48 @@
+# Node
+node_modules
+
+# Docker
+Dockerfile*
+.dockerignore
+docker-compose.yaml
+
+# Bazel
+bazel-*
+.bazelrc
+.bazelversion
+WORKSPACE
+**/*.bazel
+**/*.bzl
+
+# Logs
+*.log
+
+# Config
+dev.config
+
+# Ignore files
+.gitignore
+.prettierignore
+.bazelignore
+
+# pnpm
+pnpm-lock.yaml
+.npmrc
+
+# Next.js
+web/.next/
+**/*.sass
+web/*.env.*
+
+# Script
+scripts/
+
+# Others
+Makefile
+**/*.config
+**/*.svg
+**/*.png
+**/*.ico
+
+# macOS
+.DS_Store
