@@ -3,7 +3,7 @@ import {NextFunction, Request, Response} from 'express'
 import {injectable} from 'inversify'
 import {BaseMiddleware} from 'inversify-express-utils'
 
-import {Locales} from '@kobold/enums/locales'
+import {Locales} from '@kobold/enums/locales.enum'
 
 @injectable()
 export class LanguageMiddleware extends BaseMiddleware {

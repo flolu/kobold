@@ -1,7 +1,7 @@
 import {Response} from 'express'
 import {controller, httpGet, interfaces, response} from 'inversify-express-utils'
 
-import {Endpoints} from '@kobold/enums/endpoints'
+import {Endpoints} from '@kobold/enums/endpoints.enum'
 import {LoggerMiddleware} from '@kobold/middlewares/logger.middleware'
 import {MongoDbClient} from '@kobold/mongodb/mongodbClient'
 

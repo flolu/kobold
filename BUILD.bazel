@@ -35,6 +35,16 @@ npm_link_package(
     src = "//libraries/middlewares",
 )
 
+npm_link_package(
+    name = "node_modules/@kobold/mongodb",
+    src = "//libraries/mongodb",
+)
+
+npm_link_package(
+    name = "node_modules/@kobold/validation",
+    src = "//libraries/validation",
+)
+
 ts_config(
     name = "tsconfig",
     src = "tsconfig.json",

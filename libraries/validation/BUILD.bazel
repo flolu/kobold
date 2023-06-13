@@ -8,18 +8,17 @@ ts_library(
         exclude = ["*.test.ts"],
     ),
     deps = [
-        "//:node_modules/@kobold/config",
-        "//:node_modules/@kobold/enums",
-        "//:node_modules/@kobold/logger",
+        "//:node_modules/@kobold/exceptions",
         "//:node_modules/@types/node",
-        "//:node_modules/inversify",
-        "//:node_modules/mongodb",
+        "//:node_modules/class-transformer",
+        "//:node_modules/class-validator",
+        "//:node_modules/http-status-codes",
     ],
 )
 
 npm_package(
-    name = "mongodb",
-    srcs = [":lib"],
-    package = "@kobold/mongodb",
+    name = "validation",
+    srcs = ["lib"],
+    package = "@kobold/validation",
     visibility = ["//visibility:public"],
 )

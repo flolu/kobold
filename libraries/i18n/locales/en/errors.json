@@ -1,3 +1,4 @@
 {
-  "unexpected_exception": "Unexpected error ocurred"
+  "unexpected_exception": "Unexpected error ocurred",
+  "data_validation_failed": "Data validation failed"
 }

@@ -16,8 +16,6 @@ const mainFont = Chakra_Petch({
   variable: '--font-main',
 })
 
-// TODO cookie notice dialog
-
 function App({Component, pageProps}: AppProps & CookiesStateProps) {
   return (
     <div className={`${mainFont.variable} font-sans antialiased bg-900 text-900 text-base`}>

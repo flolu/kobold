@@ -1,7 +1,6 @@
 load("//macros:nodejs_image.bzl", "nodejs_image")
+load("@aspect_rules_jest//jest:defs.bzl", "jest_test")
 load("//macros:ts_library.bzl", "ts_library")
-
-package(default_visibility = ["//auth/test/e2e:__pkg__"])
 
 ts_library(
     name = "lib",
@@ -17,11 +16,13 @@ ts_library(
         "//:node_modules/@kobold/i18n",
         "//:node_modules/@kobold/logger",
         "//:node_modules/@kobold/middlewares",
+        "//:node_modules/@kobold/mongodb",
         "//:node_modules/@types/body-parser",
         "//:node_modules/@types/cors",
         "//:node_modules/@types/express",
         "//:node_modules/@types/node",
         "//:node_modules/body-parser",
+        "//:node_modules/class-validator",
         "//:node_modules/express",
         "//:node_modules/helmet",
         "//:node_modules/http-status-codes",
@@ -35,5 +36,24 @@ nodejs_image(
     base = "@debian_amd64//:image",
     data = ["lib"],
     entry_point = "index.js",
-    repotags = ["kobold/auth:latest"],
+    repotags = ["kobold/server:latest"],
+)
+
+ts_library(
+    name = "server_test_lib",
+    srcs = glob(["**/*.test.ts"]),
+    deps = [
+        "lib",
+        "//:node_modules/@abraham/reflection",
+        "//:node_modules/@kobold/validation",
+        "//:node_modules/@types/jest",
+        "//:node_modules/@types/uuid",
+        "//:node_modules/uuid",
+    ],
+)
+
+jest_test(
+    name = "server_test",
+    config = "//:jest_config",
+    data = ["server_test_lib"],
 )

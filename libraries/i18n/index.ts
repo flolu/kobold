@@ -3,7 +3,7 @@ import Backend, {FsBackendOptions} from 'i18next-fs-backend'
 import {injectable} from 'inversify'
 import * as path from 'path'
 
-import {Locales} from '@kobold/enums/locales'
+import {Locales} from '@kobold/enums/locales.enum'
 
 const LOCALES_PATH = path.join(__dirname, './locales/{{lng}}/{{ns}}.json')
 

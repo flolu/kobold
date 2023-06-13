@@ -2,7 +2,7 @@ import {NextFunction, Request, Response} from 'express'
 import {injectable} from 'inversify'
 import {BaseMiddleware} from 'inversify-express-utils'
 
-import {Endpoints} from '@kobold/enums/endpoints'
+import {Endpoints} from '@kobold/enums/endpoints.enum'
 import {Logger} from '@kobold/logger'
 
 @injectable()

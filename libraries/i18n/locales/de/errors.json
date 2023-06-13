@@ -1,3 +1,4 @@
 {
-  "unexpected_exception": "Ein unerwarteter Fehler ist aufgetreten"
+  "unexpected_exception": "Ein unerwarteter Fehler ist aufgetreten",
+  "data_validation_failed": "Datenvalidierung fehlgeschlagen"
 }
