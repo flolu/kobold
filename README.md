@@ -28,6 +28,7 @@ Todo
 Ideas
 - CoinTracking import (using Puppeteer)
 - Include buy/sell indicators
+- CLI
 
 -->
 

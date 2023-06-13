@@ -8,6 +8,7 @@ import {classes} from '@/lib/classes'
 
 import {DashboardIcon} from './icons/dashboard.icon'
 import {MenuIcon} from './icons/menu.icon'
+import {TransactionsIcon} from './icons/transactions.icon'
 
 interface SideNavItemProps {
   link: string
@@ -114,6 +115,11 @@ const NavigationContent: FC<NavigationContentProps> = ({children}) => {
               icon={<DashboardIcon />}
               text={t('navigation:dashboard')}
             ></SideNavItem>
+            <SideNavItem
+              link={'/transactions'}
+              icon={<TransactionsIcon />}
+              text={t('navigation:transactions')}
+            ></SideNavItem>
           </div>
         </ul>
       </nav>
@@ -128,6 +134,11 @@ const NavigationContent: FC<NavigationContentProps> = ({children}) => {
       <nav className="fixed bottom-0 left-0 right-0 z-10 h-16 overflow-hidden border-t select-none bg-500 border-background-100 sm:hidden">
         <ul className="flex items-center justify-center h-full">
           <MobileNavItem icon={<DashboardIcon />} text={t('navigation:dashboard')} link="/" />
+          <MobileNavItem
+            icon={<TransactionsIcon />}
+            text={t('navigation:transactions')}
+            link="/transactions"
+          />
         </ul>
       </nav>
 
